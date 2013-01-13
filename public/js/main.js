@@ -101,7 +101,7 @@ $('.btn-input').click(function (e){
 });
 
 $.ajax({
-  url: "feedNutrients.csv",
+  url: "feed_nutrients.csv",
   type: 'GET',
   success: function (data){
     window.feedDataCSV = data;
