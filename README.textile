@@ -1,0 +1,81 @@
+h1. Dairy Allocation Calculator
+
+
+h2. Motivation
+
+[TODO] Describe the purpose / functionality of the application.
+
+
+h2. Project status
+
+Dairy Allocation Calculator is currently under active pre-Alpha development.
+
+
+h2. License and credits
+
+(c) "Stephen Thoma":https://github.com/Modoatk 2013
+
+Released under the "GNU GPL v3 license":http://www.gnu.org/licenses/gpl-3.0.txt.
+See LICENSE.txt.
+
+Thanks to collaborators:
+* "Sam Pottinger":http://gleap.org
+* "Dr. Greg Thoma":http://www.cheg.uark.edu/802.aspx
+
+
+h2. Software used
+
+Client-side code / logic uses:
+* "Bootstrap":http://twitter.github.com/bootstrap/ under the "The Apache License":http://www.apache.org/licenses/LICENSE-2.0.html
+* "Bootstrap-Wizard":https://github.com/gilluminate/Bootstrap-Wizard under the "GNU GPL v3 license":http://www.gnu.org/licenses/gpl.html.
+* "javascript-sprintf":http://www.diveintojavascript.com/projects/javascript-sprintf under the "BSD license":http://en.wikipedia.org/wiki/BSD_licenses.
+* "jQuery":http://jquery.com/ under "The MIT License":http://opensource.org/licenses/MIT.
+* "Paperfold CSS":https://developer.mozilla.org/en-US/demos/detail/paperfold-css released into the Public Domain.
+
+Server-side code / logic uses:
+* "Rack":http://rack.github.com/ under "The MIT License":http://opensource.org/licenses/MIT.
+
+Support software used in development includes:
+* "Node.js":http://nodejs.org/ with custom "license":https://raw.github.com/joyent/node/v0.8.17/LICENSE.
+* "Sikuli Script":http://www.sikuli.org/ released under "The MIT License":http://opensource.org/licenses/MIT.
+
+
+h2. Development standards
+
+Client-side logic and structures outside of calc.js are tested via "Sikuli Script":http://www.sikuli.org/ and inspection. Mathematically-intensive operations reside in calc.js and must have 80% code coverage with tests in calc_test.js.
+
+Server-side logic does not currently need code coverage.
+
+
+h2. Development environment setup
+
+Prereqs:
+* "Node.js":http://nodejs.org/
+* "Ruby":http://www.ruby-lang.org/en/
+* "Bundler":http://gembundler.com/
+* "Sikuli Script":http://www.sikuli.org/ 
+
+$git clone git://github.com/Modoatk/dairyalloc.git
+$cd dairyalloc
+$bundle install
+
+
+h2. Testing
+
+To run development server:
+$rackup
+
+To run Sikuli Script UI tests:
+* Start Sikuli-IDE
+* Start development server
+* Navigate to http://127.0.0.1:9292 (req. Chrome or Firefox due to styling differences).
+* Open barebones_test.sikuli and run
+
+To run calc.js tests:
+$cd public/js
+$node calc_test.js
+
+
+h2. Deployment
+
+$git push heroku master
