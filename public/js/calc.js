@@ -190,3 +190,16 @@ function cumulativeDryMatterGrowth(sale_weight, mature_weight, data)
 	return CDM_calf + CDM_100 + CDM_OpenHeifer + CDM_BredHeifer + CDM_FirstCalfHeifer;
 
 }
+
+
+// Check if running node.js
+if(typeof window == 'undefined')
+{
+	exports.bertAge = bertAge;
+	exports.bertWeight = bertWeight;
+	exports.avgShrunkWeightGain = avgShrunkWeightGain;
+	exports.retainedEnergy = retainedEnergy;
+	exports.maintEnergyGrowth = maintEnergyGrowth;
+	exports.maintEnergyLactation = maintEnergyLactation;
+	exports.cumulativeDryMatterGrowth = cumulativeDryMatterGrowth;
+}
