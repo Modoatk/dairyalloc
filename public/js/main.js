@@ -1,58 +1,59 @@
-var NUM_WIZARD_STEPS = 3;
+var NUMWIZARDSTEPS = 3;
 
 var nextButtonStrategy = null;
 var wizardStep = 1;
 
 function main(data)
 {
+    var monthsGrazing = getMonthsGrazing();
+    var sales = getHeadSold();
+    var matureWeight = getMatureWeight();
+
 	for(var i=0; i<data.length; i++)
 	{
 		for(var season in data[i])
 		{
 			if(season == 'type')
 				continue;
-			var ne_g = 0;
-			var ne_m = 0;
-			var ne_l = 0;
+			var neG = 0;
+			var neM = 0;
+			var neL = 0;
 			var dmi = 0;
 
 
 			for(var ration in data[i][season])
 			{
-				ne_g += data[i][season][ration].val * getFeedInfo(data[i][season][ration], "Ne_growth");
-				ne_l += data[i][season][ration].val * getFeedInfo(data[i][season][ration], "Ne_lactation");
-				ne_m += data[i][season][ration].val * getFeedInfo(data[i][season][ration], "Ne_maint");
+				neG += data[i][season][ration].val * getFeedInfo(data[i][season][ration], "Ne_growth");
+				neL += data[i][season][ration].val * getFeedInfo(data[i][season][ration], "Ne_lactation");
+				neM += data[i][season][ration].val * getFeedInfo(data[i][season][ration], "Ne_maint");
 				dmi += data[i][season][ration].val;
 			}
 
-			data[i][season].NEG = ne_g/dmi;
-			data[i][season].NEL = ne_l/dmi;
-			data[i][season].NEM = ne_m/dmi;
+			data[i][season].NEG = neG/dmi;
+			data[i][season].NEL = neL/dmi;
+			data[i][season].NEM = neM/dmi;
 
 		}
-		var grazingfraction = getMonthsGrazing()/12;
+		var grazingfraction = monthsGrazing/12;
 		var nongrazingfraction = 1 - grazingfraction;
 		data[i].NEG = grazingfraction * data[i].grazing.NEG + nongrazingfraction * data[i].nongrazing.NEG
 		data[i].NEM = grazingfraction * data[i].grazing.NEM + nongrazingfraction * data[i].nongrazing.NEM
 		data[i].NEL = grazingfraction * data[i].grazing.NEL + nongrazingfraction * data[i].nongrazing.NEL
 	}
 
-	var sales = getHeadSold();
-	var mature_weight = getMatureWeight();
-
 	for(var animal in sales)
 	{
 
-		if(sales[animal].num_sold_beef > 0)
+		if(sales[animal].numSoldBeef > 0)
 		{
-			sales[animal].CDM_beef_growth = cumulativeDryMatterGrowth(sales[animal].weight_beef, mature_weight, data);
-			//sales[animal].CDM_beef_growth_maint = cumulativeDryMatterMaint_Growth(sales[animal].weight_beef, mature_weight, data);
+			sales[animal].CDMBeefGrowth = cumulativeDryMatterGrowth(sales[animal].weightBeef, matureWeight, data);
+			//sales[animal].CDMBeefGrowthMaint = cumulativeDryMatterMaintGrowth(sales[animal].weightBeef, matureWeight, data);
 		}
 
-		if(sales[animal].num_sold_dairy > 0)
+		if(sales[animal].numSoldDairy > 0)
 		{
-			sales[animal].CDM_dairy_growth = cumulativeDryMatterGrowth(sales[animal].weight_dairy, mature_weight, data);
-			//sales[animal].CDM_dairy_growth_maint = cumulativeDryMatter_Maint_Growth(sales[animal].weight_dairy, mature_weight, data);
+			sales[animal].CDMDairyGrowth = cumulativeDryMatterGrowth(sales[animal].weightDairy, matureWeight, data);
+			//sales[animal].CDMDairyGrowthMaint = cumulativeDryMatterMaintGrowth(sales[animal].weightDairy, matureWeight, data);
 		}
 	}
 }
@@ -71,7 +72,7 @@ $('#get-started').click(function (e){
 $('#modal-primary').click(function (e){
   
   makeValidationError(wizardStep);
-  if(wizardStep < NUM_WIZARD_STEPS && !runValidation(wizardStep))
+  if(wizardStep < NUMWIZARDSTEPS && !runValidation(wizardStep))
   {
   	return;
   }
@@ -79,7 +80,7 @@ $('#modal-primary').click(function (e){
   nextButtonStrategy();
   
   wizardStep++;
-  if(wizardStep < NUM_WIZARD_STEPS)
+  if(wizardStep < NUMWIZARDSTEPS)
   {
     nextButtonStrategy = advanceWizard;
   }
@@ -100,7 +101,7 @@ $('.btn-input').click(function (e){
 });
 
 $.ajax({
-  url: "feed_nutrients.csv",
+  url: "feedNutrients.csv",
   type: 'GET',
   success: function (data){
     window.feedDataCSV = data;
