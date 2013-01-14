@@ -10,6 +10,7 @@
 var MAX_FEEDS = 15;
 var MIN_FEEDS = 2;
 
+
 // Add standard filter method to Array if not provided by runtime
 if (!Array.prototype.filter)
 {
@@ -35,6 +36,7 @@ if (!Array.prototype.filter)
   };
 }
 
+
 // Add standard map method to Array if not provided by runtime.
 if (!Array.prototype.map)
 {
@@ -56,6 +58,7 @@ if (!Array.prototype.map)
 		};
 }
 
+
 /**
  * Replace a string's underscores with spaces.
  *
@@ -67,6 +70,7 @@ function transString(str)
 	return str.split("_").join(" ");
 }
 
+
 /**
  * Retrieves the number of head sold and their respective weights.
  *
@@ -76,6 +80,7 @@ function getHeadSold()
 {
 
 }
+
 
 /**
  * Retrieves the user input feeds used.
@@ -98,6 +103,7 @@ function getFeedsUsed()
 	});
 	return [grazing_selected, nongrazing_selected];
 }
+
 
 /**
  * Gather user entries from large input table.
@@ -149,6 +155,7 @@ function retrieveUserInput()
 	return output;
 }
 
+
 /*
  * Determine if a given target's value is within its predetermined range.
  *
@@ -161,6 +168,7 @@ function checkIfInRange(targetName, params)
   	return curVal >= params[0] && curVal <= params[1];
 }
 
+
 /*
  * Determine if number checkboxes is within target is within acceptable range.
  *
@@ -172,6 +180,7 @@ function checkNumSelected(targetName, numNeededParam)
   	var numSelected = $(targetName + ' input:checked').size();
   	return numSelected >= numNeeded;
 }
+
 
 /*
  * Evaluate a component's validation strategy.
@@ -210,6 +219,7 @@ function runValidation(name)
 
 	return failed_components.length == 0;
 }
+
 
 /*
  * Create a validation tooltip error for a given wizard step.
@@ -259,6 +269,7 @@ function makeValidationError(name)
 	}
 }
 
+
 /**
  * Form input feed table rows based on feeds chosen.
  *
@@ -307,6 +318,7 @@ function createTableRows()
 	return created_rows;
 }
 
+
 /**
  * Add rows to the input table.
 **/
@@ -335,6 +347,7 @@ function rmAllTableRows()
 	}
 }
 
+
 /**
  * Check validity of feedration values input by user.
  *
@@ -358,6 +371,7 @@ function checkValFeedration()
 	return input_feeds === num_feeds;
 }
 
+
 /**
  * Determines whether all data is entered and the calculation can be performed.
  *
@@ -368,6 +382,7 @@ function checkReady()
 	return true;
 }
 
+
 /**
  * Move the input wizard to the next step.
 **/
@@ -375,6 +390,7 @@ function advanceWizard()
 {
   $("#input-wizard").bwizard("next");
 }
+
 
 /**
  * Hide the modal and create the large input table.
@@ -384,6 +400,7 @@ function finishWizard()
   $("#input-modal").modal('hide');
   genPopulatedTable();
 }
+
 
 /**
  * Switch the completion status of page elements. 
@@ -403,6 +420,7 @@ function switchCompletion(type){
 		$('.tab-warning.active').addClass('tab-success').removeClass('tab-warning');
 }
 
+
 /**
  * Determine which tab follows the currently active one.
  *
@@ -415,6 +433,7 @@ function nextTab()
 	return  tabs[tabs.indexOf(active_tab) + 1];
 }
 
+
 /**
  * Create the large input table with proper rows
 **/
@@ -426,6 +445,7 @@ function genPopulatedTable()
 	appendTableRows();
 	switchCompletion('gen-table');
 }
+
 
 /**
  * Insert calculated values into the output table.

@@ -1,8 +1,24 @@
+/**
+ * Facade for calculator logic (calc.js).
+ *
+ * @author Stephen Thoma
+ * @author Sam Pottinger
+ * @author Dr. Greg Thoma
+ * @license GNU GPL v3
+**/
+
 var NUMWIZARDSTEPS = 3;
 
 var nextButtonStrategy = null;
 var wizardStep = 1;
 
+
+// TODO(samnsparky): Finish spec for this.
+/**
+ * Run dairy allocation calculation.
+ *
+ * @param data {array} Array of arrays of strings with feed nutrient data.
+**/
 function main(data)
 {
     var monthsGrazing = getMonthsGrazing();
@@ -58,6 +74,8 @@ function main(data)
 	}
 }
 
+
+// Prepare JS logic for wizard steps / tabls
 $(document).ready(function ($) {
 //Tabify tabs
 $('#input-tabs').tab();
@@ -69,6 +87,8 @@ $('#get-started').click(function (e){
   $("#input-wizard").bwizard("show", 0);
 });
 
+
+// Manage strategies to move through the wizard dialog.
 $('#modal-primary').click(function (e){
   
   makeValidationError(wizardStep);
@@ -90,6 +110,7 @@ $('#modal-primary').click(function (e){
   }
 });
 
+
 $('.btn-input').click(function (e){
   if(checkValFeedration())
     switchCompletion('val-feedration');
@@ -100,6 +121,8 @@ $('.btn-input').click(function (e){
   else createAlert(validationErrorMessages['val-feedration']);
 });
 
+
+// Request feed nutrients data
 $.ajax({
   url: "feed_nutrients.csv",
   type: 'GET',
