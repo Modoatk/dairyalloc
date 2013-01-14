@@ -1,6 +1,19 @@
+/**
+ * Unit testing logic for calc.js.
+ *
+ * Logic to run a list of tests on mathematical functions where each test checks
+ * the return value for equality against a known value using a list of
+ * predefined parameters.
+ *
+ * @author Stephen Thoma
+ * @author Sam Pottinger
+ * @author Dr. Greg Thoma
+**/
+
 var util = require('util');
 var calc = require('./calc');
 
+// Unit testing suite definitions
 var suiteDefns = 
 [
   {name: "testBertAge", method: calc.bertAge, tests:
@@ -29,6 +42,20 @@ var suiteDefns =
   }
 ]
 
+/**
+ * Test a single unit testing suite.
+ *
+ * Test a single unit testing suite where each test checks return values given
+ * a set of parameters, using floating point equality with a tollerance. Values
+ * are based on suite definitions.
+ *
+ * @param {object} The definition of the testing suite to run. Should have
+ *                 name {string}, method {function}, and tests {list of object}
+ *                 attribute. Furthermore, tests' elements should have params
+ *                 {array of number}, expected_value {number}, and tollerance
+ *                 {number}.
+**/
+**/
 function testCalculation(suiteDefn)
 {
   var name = suiteDefn.name;
@@ -56,6 +83,9 @@ function testCalculation(suiteDefn)
   }
 }
  
+/**
+ * Run all tests in suiteDefns.
+**/
 function runTests()
 {
   console.log("Running tests...");

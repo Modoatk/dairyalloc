@@ -1,9 +1,24 @@
 /**
- * Name: getFeedInfo(feed, type)
- * Desc: Retrieve information from the feed lookup database.
- * Para: feed, The feed for which information is requested.
- *       type, Type of information requested.
- * Retr: Requested information.
+ * Calculation logic for supporting dairy allocation calculation.
+ *
+ * @author Stephen Thoma
+ * @author Sam Pottinger
+ * @author Dr. Greg Thoma
+ * @license GNU GPL v3
+**/
+
+// TODO(samnsparky): There are a lot of abbreviations in these functions. We
+//                   need to elaborate to ensure code longevity.
+
+
+/**
+ * Get nutriet information about a type of feed. 
+ * 
+ * @param feed {string} The name of the feed for which information is requested.
+ * @param type {string} Identifier for the feed attribute requested. Options
+ *                      include "INF", "neLact", "neGrowth", "neMaint", "DM",
+ *                      and "CP"
+ * @return {number} Value of attribute requested
 **/
 function getFeedInfo(feed, type)
 {
@@ -13,13 +28,13 @@ function getFeedInfo(feed, type)
 		case "IFN":
 			idx = 1;
 			break;
-		case "Ne_lact":
+		case "ne_lact":
 			idx = 2;
 			break;
-		case "Ne_growth":
+		case "ne_growth":
 			idx = 3;
 			break;
-		case "Ne_maint":
+		case "ne_maint":
 			idx = 4;
 			break;
 		case "DM":
@@ -32,167 +47,207 @@ function getFeedInfo(feed, type)
 	for(var i=0; i<feedData.length; i++)
 	{ 
 		if($.inArray(feed, feedData[i]) !== -1)
-			var feed_index = i;
+			var feedIndex = i;
 	}
 
-	if(feed_index)
-		return feedData[feed_index][idx];
+	if(feedIndex)
+		return feedData[feedIndex][idx];
 }
 
+
 /**
- * Name: bertAge(weight, mature_weight)
- * Refr: 'Comparison of Nonlinear Models...' Brown et. al. Sci. 42:810-818
- * Para: weight, Weight for age needed.
- *       mature_weight, Breed mature weight.
- * Retr: 
+ * Calculate estimated age of a heifer given weight using von Bertalanffy model.
+ *
+ * @param weight {number} Weight for age needed.
+ * @param matureWeight {number} Breed mature weight.
+ * @return {number} Age in days.
+ * @note See 'Comparison of Nonlinear Models...' Brown et. al. Sci. 42:810-818
 **/
-function bertAge(weight, mature_weight)
+function bertAge(weight, matureWeight)
 {
-	var cy = Math.pow(weight / mature_weight,1/3);
-	var k = -0.003014; // Inverse days original work: -0.0036 breeding age and weight matched to 13 months age and 275kg (0.55 MatureWt)
-	var B = 0.60314974; // To match birth weight: B= 0.60314974 bw = 0.0625 * MatureWt
+	var cy = Math.pow(weight / matureWeight,1/3);
+
+	// Inverse days original work: -0.0036 breeding age and weight matched to 13
+	// months age and 275kg (0.55 MatureWt)
+	var k = -0.003014;
+
+	// To match birth weight: B= 0.60314974 bw = 0.0625 * MatureWt
+	var B = 0.60314974;
 
 	return (1 / k) * Math.log((1 - cy) / B);
 }
 
-/**
- * Name: bertWeight(age, mature_weight)
- * Para: age, Age for weight needed.
- *       mature_weight, Breed mature weight.
- * Retr:
-**/
-function bertWeight(age, mature_weight)
-{
-	var k = -0.003014; // Inverse days original work: -0.0036 breeding age and weight matched to 13 months age and 275kg (0.55 MatureWt)
-	var B = 0.60314974; // To match birth weight: B= 0.60314974 bw = 0.0625 * MatureWt
 
-	return mature_weight * Math.pow((1 - B * Math.exp(k * age)),3); //[TODO]: Double check order of operations
+/**
+ * Calculate estimated weight of a heifer given age using von Bertalanffy model.
+ *
+ * @param age {number} The age of the heifer.
+ * @param matureWeight {number} Breed mature weight.
+ * @return {number} Expected weight in kg.
+**/
+function bertWeight(age, matureWeight)
+{
+	// Inverse days original work: -0.0036 breeding age and weight matched to 13
+	// months age and 275kg (0.55 MatureWt)
+	var k = -0.003014;
+
+	// To match birth weight: B= 0.60314974 bw = 0.0625 * MatureWt
+	var B = 0.60314974;
+
+	return matureWeight * Math.pow((1 - B * Math.exp(k * age)),3);
 }
 
-/**
- * Name: avgShrunkWeightGain(time_one, time_two, mature_weight)
- * Desc:
- * Para: time_one,
- *       time_two,
- *       mature_weight, Breed mature weight.
- * Retr:
-**/
-function avgShrunkWeightGain(time_one, time_two, mature_weight)
-{
-	return 1 / (time_two - time_one) * (bertWeight(time_two, mature_weight) - bertWeight(time_one, mature_weight));
-}
 
 /**
- * Name: retainedEnergy(age_start, age_end, start_live_weight, end_live_weight, mature_weight)
- * Desc:
- * Para: age_start,
- *       age_end,
- *       start_live_weight,
- *       end_live_weight,
- *       mature_weight,
- * Retr:
+ * Calculate average shrunk weight gain between two day stamps.
+ *
+ * @param {number} timeOne The number of days to start the estimation for.
+ * @param {number} matureWeight The mature weight for the target breed.
+ * @return {number} Expected weight gain in kg.
 **/
-function retainedEnergy(age_start, age_end, start_live_weight, end_live_weight, mature_weight)
+function avgShrunkWeightGain(timeOne, timeTwo, matureWeight)
 {
-	if(age_start >= age_end)
+	return 1 / (timeTwo - timeOne) * (bertWeight(timeTwo, matureWeight)
+		- bertWeight(timeOne, matureWeight));
+}
+
+
+// TODO(samnsparky): Retained energy not explained.
+/**
+ * Calculate retained energy given start and end days and live weights.
+ *
+ * @param ageStart {number} The start age in days of the heifer to start the
+ *                          calculation.
+ * @param ageEnd {number} The age in days of the heifer to end the calculation.
+ * @param startLiveWeight The live weight to start the calculation.
+ * @param endLiveWeight The live weight to end the calculation.
+**/
+function retainedEnergy(ageStart, ageEnd, startLiveWeight, endLiveWeight,
+	matureWeight)
+{
+	if(ageStart >= ageEnd)
 		return 0;
 
-	var mature_shrunk_body_weight = 0.96 * mature_weight;
-	var start_shrunk_body_weight = 0.96 * start_live_weight;
-	var shrunk_weight_gain = avgShrunkWeightGain(age_start, age_end, mature_weight); // 0.96 * (end_live_weight - start_live_weight) / (age_end - age_start)
+	var matureShrunkBodyWeight = 0.96 * matureWeight;
+	var startshrunkbodyWeight = 0.96 * startLiveWeight;
 
-	if(shrunk_weight_gain < 0)
+	// 0.96 * (endLiveWeight - startLiveWeight) / (ageEnd - ageStart)
+	var shrunkweightGain = avgShrunkWeightGain(ageStart, ageEnd, matureWeight);
+
+	if(shrunkweightGain < 0)
 	{
 		// If statements benchmark much faster than greater-than/less-than switch statement
-		if(age_end < 100)
-			shrunk_weight_gain = 0.8;
-		else if(age_end < 500)
-			shrunk_weight_gain = 0.5;
-		else if(age_end < 700)
-			shrunk_weight_gain = 0.4;
-		else if(age_end > 701)
-			shrunk_weight_gain = 0.25;
+		if(ageEnd < 100)
+			shrunkweightGain = 0.8;
+		else if(ageEnd < 500)
+			shrunkweightGain = 0.5;
+		else if(ageEnd < 700)
+			shrunkweightGain = 0.4;
+		else if(ageEnd > 701)
+			shrunkweightGain = 0.25;
 	}
-	return 3.238 * mature_shrunk_body_weight * Math.pow(shrunk_weight_gain,0.97) * (Math.pow((end_live_weight * 0.96 / mature_shrunk_body_weight),7/4) - Math.pow((start_shrunk_body_weight / mature_shrunk_body_weight),7/4));
+
+	// TODO(samnsparky): These values are not explained
+	return 3.238 * matureShrunkBodyWeight * Math.pow(shrunkweightGain,0.97) * (Math.pow((endLiveWeight * 0.96 / matureShrunkBodyWeight),7/4) - Math.pow((startshrunkbodyWeight / matureShrunkBodyWeight),7/4));
 }
 
+
+// TODO(samnsparky): Need description.
 /**
- * Name: maintEnergyGrowth(age_start, age_end, start_live_weight, end_live_weight, mature_weight)
- * Desc: 
- * Para: age_start,
- *       age_end,
- *       start_live_weight,
- *       end_live_weight,
- *       mature_weight,
- * Retr:
+ * Calculate the energy requirement for .
+ *
+ *
+ * @param {number} ageStart The age in days to start the calculation on.
+ * @param {number} ageEnd The age in days to end the calculation on.
+ * @param {number} startLiveWeight The weight in kg that the heifer starts at.
+ * @param {number} endLiveWeight The weight in kg that the heifer ends at.
+ * @return {number} Required energy // TODO(samnsparky): Need units
 **/
-function maintEnergyGrowth(age_start, age_end, start_live_weight, end_live_weight, mature_weight)
+function maintEnergyGrowth(ageStart, ageEnd, startLiveWeight, endLiveWeight,
+	matureWeight)
 {
 
 }
 
+
+// TODO(samnsparky): Need description
 /**
- * Name: maintEnergyLactation(age_start, age_end, start_live_weight, end_live_weight, mature_weight)
- * Desc: 
- * Para: age_start,
- *       age_end,
- *       start_live_weight,
- *       end_live_weight,
- *       mature_weight,
- * Retr:
+ * Calculate the energy requirement for .
+ *
+ * @param {number} ageStart The age in days to start the calculation on.
+ * @param {number} ageEnd The age in days to end the calculation on.
+ * @param {number} startLiveWeight The weight in kg that the heifer starts at.
+ * @param {number} endLiveWeight The weight in kg that the heifer ends at.
+ * @return {number} Required energy // TODO(samnsparky): Need units
 **/
-function maintEnergyLactation(age_start, age_end, start_live_weight, end_live_weight, mature_weight)
+function maintEnergyLactation(ageStart, ageEnd, startLiveWeight, endLiveWeight,
+	matureWeight)
 {
 
 }
-function cumulativeDryMatterGrowth(sale_weight, mature_weight, data)
+
+
+// TODO(samnsparky): Need description.
+/**
+ * Calculate the cumulative growth in dry matter.
+ *
+ * @param {number} saleWeight The heifer weight in kg at sale.
+ * @param {number} matureWeight The heifer weight in kg at breed maturity.
+ * @param {array} Nested array of arrays. First nested array has header
+ *                information and the subsequent arrays contain strings
+ *                capable of being cast to floating point values. Numbers
+ *                correspond to feed nutrient information.
+ * @return {number} Resulting dry matter growth
+**/
+function cumulativeDryMatterGrowth(saleWeight, matureWeight, data)
 {
-    if(sale_weight >= mature_weight)
-		sale_weight = 0.98 * mature_weight;
+    if(saleWeight >= matureWeight)
+		saleWeight = 0.98 * matureWeight;
 
-	var bullcalf_weight = 0.0625 * mature_weight;
-	var bredheifer_weight = 0.55 * mature_weight;
-	var openheifer_weight = (bullcalf_weight + bredheifer_weight) / 2;
-	var firstcalfheifer_weight = 0.8 * mature_weight;
-	var breeding_age = bertAge(0.55 * mature_weight, mature_weight);
-	var calving_age = breeding_age + 279;
-	var age_100kg = bertAge(100,mature_weight);
-	var LiveWtGain100kg = (100 - bullcalf_weight)/age_100kg;
-	var calving_weight = bertWeight(calving_age, mature_weight);
-	var NE_preg = 0.65*data.dry.NEG + 0.35*data.heifer.NEG;
-	var CDM_calf = 6.45/NE_preg * bullcalf_weight;
+	var bullcalfWeight = 0.0625 * matureWeight;
+	var bredheiferWeight = 0.55 * matureWeight;
+	var openheiferWeight = (bullcalfWeight + bredheiferWeight) / 2;
+	var firstcalfheiferWeight = 0.8 * matureWeight;
+	var breedingAge = bertAge(0.55 * matureWeight, matureWeight);
+	var calvingAge = breedingAge + 279;
+	var age100kg = bertAge(100,matureWeight);
+	var LiveWtGain100kg = (100 - bullcalfWeight)/age100kg;
+	var calvingWeight = bertWeight(calvingAge, matureWeight);
+	var nePreg = 0.65*data.dry.NEG + 0.35*data.heifer.NEG;
+	var cdmCalf = 6.45/nePreg * bullcalfWeight;
 
-	if (sale_weight <= 100)
+	if (saleWeight <= 100)
 		{
-			var LiveWtGain = (sale_weight - bullcalf_weight)/bertAge(sale_weight,mature_weight)
-			var CDM = (2892*LiveWtGain^(1/5)/(6775*data.openheifer.NEG))*(sale_weight^(271/200)-bullcalf_weight^(271/200));
-			return CDM_calf + CDM;
+			var LiveWtGain = (saleWeight - bullcalfWeight)/bertAge(saleWeight,matureWeight)
+			var CDM = (2892*LiveWtGain^(1/5)/(6775*data.openheifer.NEG))*(saleWeight^(271/200)-bullcalfWeight^(271/200));
+			return cdmCalf + CDM;
 		}
 
-	var CDM_100 = (2892*LiveWtGain100kg^(1/5)/(6775*data.openheifer.NEG))*(sale_weight^(271/200)-bullcalf_weight^(271/200));
+	var cdm100 = (2892*LiveWtGain100kg^(1/5)/(6775*data.openheifer.NEG))*(saleWeight^(271/200)-bullcalfWeight^(271/200));
 
-	if (sale_weight < bredheifer_weight)
+	if (saleWeight < bredheiferWeight)
 	{
-		CDM_OpenHeifer = retainedEnergy(age_100kg,bertAge(sale_weight,mature_weight),100,sale_weight,mature_weight)/data.openheifer.NEG;
-		CDM = CDM_calf + CDM_100 + CDM_OpenHeifer;
+		cdmOpenHeifer = retainedEnergy(age100kg,bertAge(saleWeight,matureWeight),100,saleWeight,matureWeight)/data.openheifer.NEG;
+		CDM = cdmCalf + cdm100 + cdmOpenHeifer;
 		return CDM;
 	}
 
-	if (sale_weight < calving_weight)
+	if (saleWeight < calvingWeight)
 	{
-		CDM_OpenHeifer = retainedEnergy(age_100kg,breeding_age,100,bredheifer_weight,mature_weight)/data.openheifer.NEG;
-		CDM_BredHeifer = retainedEnergy(breeding_age,bertAge(sale_weight,mature_weight),bredheifer_weight,mature_weight)/data.bredheifer.NEG;
-		return CDM_calf + CDM_100 + CDM_OpenHeifer + CDM_BredHeifer;
+		cdmOpenHeifer = retainedEnergy(age100kg,breedingAge,100,bredheiferWeight,matureWeight)/data.openheifer.NEG;
+		cdmBredHeifer = retainedEnergy(breedingAge,bertAge(saleWeight,matureWeight),bredheiferWeight,matureWeight)/data.bredheifer.NEG;
+		return cdmCalf + cdm100 + cdmOpenHeifer + cdmBredHeifer;
 	}
-	var CDM_OpenHeifer = retainedEnergy(age_100kg,breeding_age,100,bredheifer_weight,mature_weight)/data.openheifer.NEG;
-	var CDM_BredHeifer = retainedEnergy(breeding_age,bertAge(sale_weight,mature_weight),bredheifer_weight,mature_weight)/data.bredheifer.NEG;
-	var CDM_FirstCalfHeifer = retainedEnergy(calving_age,bertAge(sale_weight,mature_weight),calving_weight,mature_weight)/data.firstcalfheifer.NEG;
-	return CDM_calf + CDM_100 + CDM_OpenHeifer + CDM_BredHeifer + CDM_FirstCalfHeifer;
+	var cdmOpenHeifer = retainedEnergy(age100kg,breedingAge,100,bredheiferWeight,matureWeight)/data.openheifer.NEG;
+	var cdmBredHeifer = retainedEnergy(breedingAge,bertAge(saleWeight,matureWeight),bredheiferWeight,matureWeight)/data.bredheifer.NEG;
+	var cdmFirstCalfHeifer = retainedEnergy(calvingAge,bertAge(saleWeight,matureWeight),calvingWeight,matureWeight)/data.firstcalfheifer.NEG;
+	return cdmCalf + cdm100 + cdmOpenHeifer + cdmBredHeifer + cdmFirstCalfHeifer;
 
 }
 
 
 // Check if running node.js
+// Run unit tests for calculation routines
 if(typeof window == 'undefined')
 {
 	exports.bertAge = bertAge;
