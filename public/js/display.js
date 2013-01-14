@@ -1,6 +1,16 @@
+/**
+ * Presenter logic for the Dairy Allocation Calculator project.
+ *
+ * @author Stephen Thoma
+ * @author Sam Pottinger
+ * @author Dr. Greg Thoma
+ * @license GNU GPL v3
+**/
+
 var MAX_FEEDS = 15;
 var MIN_FEEDS = 2;
 
+// Add standard filter method to Array if not provided by runtime
 if (!Array.prototype.filter)
 {
   Array.prototype.filter = function(fun /*, thisp*/)
@@ -25,6 +35,7 @@ if (!Array.prototype.filter)
   };
 }
 
+// Add standard map method to Array if not provided by runtime.
 if (!Array.prototype.map)
 {
 	Array.prototype.map = function(fun /*, thisp*/)

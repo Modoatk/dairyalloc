@@ -8,6 +8,7 @@
  * @author Stephen Thoma
  * @author Sam Pottinger
  * @author Dr. Greg Thoma
+ * @license GNU GPL 3
 **/
 
 var util = require('util');
