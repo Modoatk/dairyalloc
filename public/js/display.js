@@ -27,39 +27,39 @@ if (!Array.prototype.filter)
 
 if (!Array.prototype.map)
 {
-  Array.prototype.map = function(fun /*, thisp*/)
-  {
-    var len = this.length;
-    if (typeof fun != "function")
-      throw new TypeError();
+	Array.prototype.map = function(fun /*, thisp*/)
+  	{
+	    var len = this.length;
+	    if (typeof fun != "function")
+	    	throw new TypeError();
 
-    var res = new Array(len);
-    var thisp = arguments[1];
-    for (var i = 0; i < len; i++)
-    {
-      if (i in this)
-        res[i] = fun.call(thisp, this[i], i, this);
-    }
+	    var res = new Array(len);
+	    var thisp = arguments[1];
+	    for (var i = 0; i < len; i++)
+	    {
+	    	if (i in this)
+	        	res[i] = fun.call(thisp, this[i], i, this);
+	    }
 
-    return res;
-  };
+	    return res;
+		};
 }
 
 /**
- * Name: transString(str)
- * Desc: Replace '_' with ' ' for human readability.
- * Para: str, The string to perform the replace on.
+ * Replace a string's underscores with spaces.
+ *
+ * @param {string} str, The string to perform the replace on.
+ * @return {string}, The transformed string.
 **/
 function transString(str)
 {
-  return str.split("_").join(" ");
+	return str.split("_").join(" ");
 }
 
 /**
- * Name: getHeadSold()
- * Desc: Retrieves the number of head sold to beef and dairy and their
- *       respective weights.
- * Retr: Head sold and respective weights.
+ * Retrieves the number of head sold and their respective weights.
+ *
+ * @return {array}, Head sold and respective weights.
 **/
 function getHeadSold()
 {
@@ -67,9 +67,9 @@ function getHeadSold()
 }
 
 /**
- * Name: getFeedsUsed()
- * Desc: Retrieves the user input feeds used.
- * Retr: Array of arrays containing the selected feeds.
+ * Retrieves the user input feeds used.
+ *
+ * @return {array} Array of arrays containing the selected feeds.
 **/
 function getFeedsUsed()
 {
@@ -89,9 +89,9 @@ function getFeedsUsed()
 }
 
 /**
- * Name: retrieveUserInput()
- * Desc: Gather user entries from large input table.
- * Retr: Array containing the input values.
+ * Gather user entries from large input table.
+ *
+ * @return {array} Array containing the input values.
 **/
 function retrieveUserInput()
 {
@@ -138,78 +138,36 @@ function retrieveUserInput()
 	return output;
 }
 
-
+/*
+ * Determine if a given target's value is within its predetermined range.
+ *
+ * @return {boolean} True if acceptable, false otherwise.
+*/
 function checkIfInRange(targetName, params)
 {
-  var curVal = $(targetName).val();
-  curVal = parseFloat(curVal);
-  return curVal >= params[0] && curVal <= params[1];
+	var curVal = $(targetName).val();
+  	curVal = parseFloat(curVal);
+  	return curVal >= params[0] && curVal <= params[1];
 }
 
+/*
+ * Determine if number checkboxes is within target is within acceptable range.
+ *
+ * @return {boolean} True if acceptable, false otherwise.
+*/
 function checkNumSelected(targetName, numNeededParam)
 {
-  var numNeeded = numNeededParam[0];
-  var numSelected = $(targetName + ' input:checked').size();
-  return numSelected >= numNeeded;
+  	var numNeeded = numNeededParam[0];
+  	var numSelected = $(targetName + ' input:checked').size();
+  	return numSelected >= numNeeded;
 }
 
-var validationStrategies = {};
-validationStrategies.step1 = [
-	{
-		method: checkNumSelected,
-		elementName: "#dropdown-grazingfeeds",
-		params: [2],
-		tooltip: "Need to select %d elements"
-	},
-	{
-		method: checkNumSelected,
-		elementName: "#dropdown-nongrazingfeeds",
-		params: [2],
-		tooltip: "Need to select %d elements"
-	}
-];
-
-validationStrategies.step2 = [
-  {		
-	method: checkIfInRange,
-	elementName: "#wt-mature",
-	params: [400, 700],
-	tooltip: "Must be between %d and %d"
-  },
-  {
-	method: checkIfInRange,
-	elementName: "#num-calves-beef",
-	params: [0, 10000],
-	tooltip: "Must be between %d and %d"
-  },
-  {
-	method: checkIfInRange,
-	elementName: "#num-calves-dairy",
-	params: [0, 10000],
-	tooltip: "Must be between %d and %d"
-  }
-];
-validationStrategies.step3 = [
-  {
-	method: checkIfInRange,
-	elementName: "#wt-milk",
-	params: [0, 300000000],
-	tooltip: "Must be between %d and %d"
-  },
-  {
-	method: checkIfInRange,
-	elementName: "#pr-prot",
-	params: [0, 10],
-	tooltip: "Must be between %d and %d"
-  },
-  {
-	method: checkIfInRange,
-	elementName: "#pr-fat",
-	params: [0, 10],
-	tooltip: "Must be between %d and %d"
-  }
-];
-
+/*
+ * Evaluate a component's validation strategy.
+ *
+ * @param {string} component, The component whose strategy will be run.
+ * @return {boolean} True if validated successfully, and false otherwise.
+*/
 function runValidationStrategy(component)
 {
 	var method = component.method;
@@ -218,24 +176,35 @@ function runValidationStrategy(component)
 	return method(elementName, params);
 }
 
+/*
+ * Perform a validation for a given wizard step.
+ *
+ * @param {string} name, The name of the step to use.
+ * @return {boolean} True if validated successfully, and false otherwise.
+*/
 function runValidation(name)
 {
-  var strategy = validationStrategies[
+	var strategy = validationStrategies[
 	"step" + new String(name)
-  ];
-  if(strategy === null || strategy === undefined)
+	];
+	if(strategy === null || strategy === undefined)
 	return false;
-  
-  var failed_components = strategy.filter(
-  	function(component, index, targetArray)
-  	{
-  		return !runValidationStrategy(component);
-  	}
-  );
 
-  return failed_components.length == 0;
+	var failed_components = strategy.filter(
+		function(component, index, targetArray)
+		{
+			return !runValidationStrategy(component);
+		}
+	);
+
+	return failed_components.length == 0;
 }
 
+/*
+ * Create a validation tooltip error for a given wizard step.
+ *
+ * @param {string} name, The name of the step to use.
+*/
 function makeValidationError(name)
 {
   var strategy = validationStrategies[
@@ -280,9 +249,9 @@ function makeValidationError(name)
 }
 
 /**
- * Name: createTableRows()
- * Desc: Form the rows containing chosen feeds to be displayed in the large input table.
- * Retr: Array of created rows.
+ * Form input feed table rows based on feeds chosen.
+ *
+ * @return {array} An array of created rows.
 **/
 function createTableRows()
 {
@@ -328,8 +297,7 @@ function createTableRows()
 }
 
 /**
- * Name: appendTableRows()
- * Desc: Add rows to the large input table.
+ * Add rows to the input table.
 **/
 function appendTableRows()
 {
@@ -357,9 +325,9 @@ function rmAllTableRows()
 }
 
 /**
- * Name: checkValFeedration()
- * Desc: Check validity of feedration values input by user.
- * Retr: True if allowable and false otherwise.
+ * Check validity of feedration values input by user.
+ *
+ * @return {boolean} True if allowable and false otherwise.
 **/
 function checkValFeedration()
 {
@@ -380,29 +348,26 @@ function checkValFeedration()
 }
 
 /**
- * Name: checkReady()
- * Desc: Determines whether all data is entered and the calculation can be performed.
- * Retr: True if calculation can be performed and false otherwise.
+ * Determines whether all data is entered and the calculation can be performed.
+ *
+ * @return {boolean} True if calculation can be performed and false otherwise.
 **/
 function checkReady()
 {
 	return true;
 }
 
-// Listing of error messages for validation routines
-var validationErrorMessages = {
-	"gen-table" : "<strong>Error:</strong> Please select at least <strong>"+MIN_FEEDS+
-	"</strong> and as many as <strong>"+MAX_FEEDS+"</strong> feeds from the dropdown menus!",
-	"num-grazingmonths" : "<strong>Error:</strong> Please enter a number from 0 to 12 "+
-	"for the number of months spent grazing!",
-	"val-feedration" : "<strong>Error:</strong> Please ensure <strong>all fields</strong> have been been completed!"
-};
-
+/**
+ * Move the input wizard to the next step.
+**/
 function advanceWizard()
 {
   $("#input-wizard").bwizard("next");
 }
 
+/**
+ * Hide the modal and create the large input table.
+**/
 function finishWizard()
 {
   $("#input-modal").modal('hide');
@@ -410,10 +375,11 @@ function finishWizard()
 }
 
 /**
- * Name: switchCompletion(type)
- * Desc: Actions to be taken to visually cue that data input has been accepted
- *       if prerequisite actions have already been completed.
- * Para: type, Defines which actions to take based on the form that was completed.
+ * Switch the completion status of page elements. 
+ *
+ *  Actions to be taken to visually cue that data input has been accepted
+ *  if prerequisite actions have already been completed.
+ * @param {string} type, Defines which actions to take based on the form that was completed.
 **/
 function switchCompletion(type){
 	if(type == "gen-table")
@@ -426,6 +392,11 @@ function switchCompletion(type){
 		$('.tab-warning.active').addClass('tab-success').removeClass('tab-warning');
 }
 
+/**
+ * Determine which tab follows the currently active one.
+ *
+ * @return {string} The id of the next tab
+**/
 function nextTab()
 {
 	var tabs = ['heifer_tab', 'bredheifer_tab', 'springer_tab', 'firstcalf_tab', 'dry_tab', 'lactating_tab'];
@@ -433,6 +404,9 @@ function nextTab()
 	return  tabs[tabs.indexOf(active_tab) + 1];
 }
 
+/**
+ * Create the large input table with proper rows
+**/
 function genPopulatedTable()
 {
 	$('#main-hero').removeClass('logo');
@@ -443,9 +417,8 @@ function genPopulatedTable()
 }
 
 /**
- * Name: populateOutputTable(data)
- * Desc: Insert calculated values into the output table.
- * Para: data, The values to be inserted.
+ * Insert calculated values into the output table.
+ * @param {array}, The values to be inserted.
 **/
 function populateOutputTable(data)
 {
