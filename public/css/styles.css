@@ -144,7 +144,12 @@ input.feed-in-num{
   width: 190px;
 }
 
-.input-table-pad
+.input-table-head
+{
+  padding-bottom: 32px;
+}
+
+#input-table-month
 {
   padding-top: 32px;
 }
