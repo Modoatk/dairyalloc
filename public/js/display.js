@@ -9,6 +9,9 @@
 
 var MAX_FEEDS = 15;
 var MIN_FEEDS = 2;
+var LARGE_INPUT_TABLE_INTEGER_FIELD_CLASSES = ['.grazing-month', '.nongrazing-month', '.sold'];
+var LARGE_INPUT_TABLE_FLOAT_FIELD_CLASSES = ['.feed-in', '.weight'];
+var largeInputTableValidators = [];
 
 
 // Add standard filter method to Array if not provided by runtime
@@ -71,6 +74,14 @@ function transString(str)
 }
 
 
+function ensureAndGetKey(target, key)
+{
+	if(!target.hasOwnProperty(key))
+		target[key] = {};
+	return target[key];
+}
+
+
 /**
  * Retrieves the number of head sold and their respective weights.
  *
@@ -78,9 +89,63 @@ function transString(str)
 **/
 function getHeadSold()
 {
+	output = {}
+	types = [
+		{
+			typeName: 'beef',
+			weightSetterStrategy: function(animalInfo, value)
+			{animalInfo.weight_beef = value;},
+			soldSetterStrategy: function(animalInfo, value)
+			{animalInfo.sold_beef = value;}
+		},
+		{
+			typeName: 'dairy',
+			weightSetterStrategy: function(animalInfo, value)
+			{animalInfo.weight_dairy = value;},
+			soldSetterStrategy: function(animalInfo, value)
+			{animalInfo.sold_dairy = value;}
+		}
+	];
 
+	for(i in types)
+	{
+		var typeName = types[i].typeName;
+		var weightSetterStrategy = types[i].weightSetterStrategy;
+		var soldSetterStrategy = types[i].soldSetterStrategy;
+
+		$('.tab-pane').find('.weight-'+typeName).each(function(j, elem) {
+			var animalName = $(elem).parents('.tab-pane').attr('id').split('_')[0];
+			var animalInfo = ensureAndGetKey(output, animalName);
+			var val = parseFloat($(elem).val());
+			weightSetterStrategy(animalInfo, val);
+		});
+
+		$('.tab-pane').find('.sold-'+typeName).each(function(j, elem) {
+			var animalName = $(elem).parents('.tab-pane').attr('id').split('_')[0];
+			var animalInfo = ensureAndGetKey(output, animalName);
+			var val = parseInt($(elem).val());
+			soldSetterStrategy(animalInfo, val);
+		});
+	}
+
+	return output;
 }
 
+/**
+ * Retrieve input number of months spent grazing for each animal type.
+ *
+ * @return {object} Number of months spent grazing for each animal type.
+**/
+function getMonthsGrazing()
+{
+	var output = {}
+	$('.tab-pane').find('.grazing-month').each(function(i) {
+		var active_tab = $(this).parents('.tab-pane').attr('id').split('_')[0];
+		var months = $(this).val();
+		output[active_tab] = months;
+	});
+	return output;
+}
 
 /**
  * Retrieves the user input feeds used.
@@ -319,11 +384,38 @@ function createTableRows()
 }
 
 
+function prepareLargeInputTableValidators()
+{
+	for(i in LARGE_INPUT_TABLE_INTEGER_FIELD_CLASSES)
+	{
+		var curClassName = LARGE_INPUT_TABLE_INTEGER_FIELD_CLASSES[i];
+		$(curClassName).each(
+			function(j, elem)
+			{
+				largeInputTableValidators.push(new IntegerFieldValidator(elem));
+			}
+		);
+	}
+
+	for(i in LARGE_INPUT_TABLE_FLOAT_FIELD_CLASSES)
+	{
+		var curClassName = LARGE_INPUT_TABLE_FLOAT_FIELD_CLASSES[i];
+		$(curClassName).each(
+			function(j, elem)
+			{
+				largeInputTableValidators.push(new FloatFieldValidator(elem));
+			}
+		);
+	}
+}
+
+
 /**
  * Add rows to the input table.
 **/
 function appendTableRows()
 {
+	prepareLargeInputTableValidators();
 	var rows = createTableRows();
 	for (var i=0; i<rows.length; i++)
 	{
@@ -433,6 +525,17 @@ function nextTab()
 	return  tabs[tabs.indexOf(active_tab) + 1];
 }
 
+/**
+ * Populate corresponding grazing field with remaining months in a year.
+**/
+function monthsGrazingAutoComplete()
+{
+	numGrazingMonths = $('.tab-pane.active').find('.grazing-month').val();
+	numNonGrazingMonths = 12 - numGrazingMonths;
+	if(numGrazingMonths)
+		$('.tab-pane.active').find('.nongrazing-month').val(numNonGrazingMonths);
+}
+
 
 /**
  * Create the large input table with proper rows
@@ -449,6 +552,7 @@ function genPopulatedTable()
 
 /**
  * Insert calculated values into the output table.
+ *
  * @param {array}, The values to be inserted.
 **/
 function populateOutputTable(data)
