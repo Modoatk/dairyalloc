@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -11,7 +10,7 @@
     <link href="css/bwizard.min.css" rel="stylesheet">
     <!--<link href="css/paperfold.css" rel="stylesheet"> -->
     <link href="css/styles.css" rel="stylesheet">
-    <link href='https://fonts.googleapis.com/css?family=Raleway:200,100,400' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapias.com/css?family=Raleway:200,100,400' rel='stylesheet' type='text/css'>
     
     <!--<script type="text/javascript" src="js/modernizr.custom.71147.js"></script> -->
     <script type="text/javascript" src="js/prefixfree.min.js"></script>
@@ -314,7 +313,7 @@
           <div id="wizard-three">
             <form class="form-horizontal">
           		<div class="control-group">
-          			<label class="control-label" for="wt-milk">Annual weight milk</label>
+          			<label class="control-label" for="wt-milk">Annual milk production</label>
           			<div class="controls">
                   <div class="input-append">
           				  <input id="wt-milk" class="span1" type="text" />
@@ -354,10 +353,12 @@
         <div id="main-hero" class="hero-unit logo">
           <div id="welcome-hide">
             <h2>Dairy Allocation Calculator</h2>
-            <h4>Calculate stuff or something about cows</h4>
+            <h4>Calculate allocation fractions for dairy farms to assign whole farm emissions across milk, beef, and replacement heifers sold to another dairy</h4>
             <p>
-              Hi and welcome to the dairy allocation calculator that does this and takes care of that and tells you your allocation fraction which is
-              something important. To begin the calculations, click the Get Started button and start filling in your information!
+              Welcome to the dairy allocation calculator. This tool will assist in collection of information used for a biophysical calculation of allocation fractions for 
+              dairy operations. The basis of this approach is presented by Thoma, G., et al., A biophysical approach to allocation of life cycle environmental burdens for fluid milk supply
+			  chain analysis, International Dairy Journal (2012), http://dx.doi.org/10.1016/j.idairyj.2012.08.012. 
+			  To begin the calculations, click the Get Started button and start filling in your information!
             </p>
             <div id='button-pad'>
                 <a id="get-started" href="#input-modal" role="button" class="btn btn-large btn-primary pull-right" data-toggle="modal">Get Started</a>
@@ -379,25 +380,25 @@
             <div id="input-tabs-content" class="tab-content">
               <div class="tab-pane active" id="heifer_tab">
                 <h3>Heifers</h3>
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                <p>Heifers refer to female animals which will be bred as replacements for culled mature cows. Also refered to as Open Heifers.</p>
                 <form class="well form-inline">
                   <div class="row-fluid">
                     <div class="span4 offset1">
                       <label class="control-label">Beef:
-                        <input type="text" class="sold sold-beef input-medium" placeholder="Number Sold" />
+                        <input type="text" class="sold-beef input-medium" placeholder="Number Sold" />
                       </label>
                       <div class="input-append">
-                        <input type="text" class="weight weight-beef input-small" placeholder="Weight" />
+                        <input type="text" class="weight-beef input-small" placeholder="Weight (kg)" />
                         <span class="add-on">kg</span>
                       </div>
                     </div>
 
                     <div class="span4 offset2">
                       <label class="control-label">Dairy:
-                        <input type="text" class="sold sold-dairy input-medium" placeholder="Number Sold" />
+                        <input type="text" class="sold-dairy input-medium" placeholder="Number Sold" />
                       </label>
                       <div class="input-append">
-                        <input type="text" class="weight weight-dairy input-small" placeholder="Weight" />
+                        <input type="text" class="weight-dairy input-small" placeholder="Weight (kg)" />
                         <span class="add-on">kg</span>
                       </div>
                     </div>
@@ -426,25 +427,25 @@
 
               <div class="tab-pane" id="bredheifer_tab">
                 <h3>Bred Heifers</h3>
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                <p>Animals which have been bred, typically at approximately 13 -14 months of age.</p>
                 <form class="well form-inline">
                   <div class="row-fluid">
                     <div class="span4 offset1">
                       <label class="control-label">Beef:
-                        <input type="text" class="sold sold-beef input-medium" placeholder="Number Sold" />
+                        <input type="text" class="sold-beef input-medium" placeholder="Number Sold" />
                       </label>
                       <div class="input-append">
-                        <input type="text" class="weight weight-beef input-small" placeholder="Weight" />
+                        <input type="text" class="weight-beef input-small" placeholder="Weight (kg)" />
                         <span class="add-on">kg</span>
                       </div>
                     </div>
 
                     <div class="span4 offset2">
                       <label class="control-label">Dairy:
-                        <input type="text" class="sold sold-dairy input-medium" placeholder="Number Sold" />
+                        <input type="text" class="sold-dairy input-medium" placeholder="Number Sold" />
                       </label>
                       <div class="input-append">
-                        <input type="text" class="weight weight-dairy input-small" placeholder="Weight" />
+                        <input type="text" class="weight-dairy input-small" placeholder="Weight (kg)" />
                         <span class="add-on">kg</span>
                       </div>
                     </div>
@@ -472,25 +473,25 @@
 
               <div class="tab-pane" id="springer_tab">
                 <h3>Springers</h3>
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                <p>This animal class may not be commonly used; it is a subset of Bred Heifers which may receive a different diet during the final 3 to 4 weeks of pregnancy.</p>
                 <form class="well form-inline">
                   <div class="row-fluid">
                     <div class="span4 offset1">
                       <label class="control-label">Beef:
-                        <input type="text" class="sold sold-beef input-medium" placeholder="Number Sold" />
+                        <input type="text" class="sold-beef input-medium" placeholder="Number Sold" />
                       </label>
                       <div class="input-append">
-                        <input type="text" class="weight weight-beef input-small" placeholder="Weight" />
+                        <input type="text" class="weight-beef input-small" placeholder="Weight (kg)" />
                         <span class="add-on">kg</span>
                       </div>
                     </div>
 
                     <div class="span4 offset2">
                       <label class="control-label">Dairy:
-                        <input type="text" class="sold sold-dairy input-medium" placeholder="Number Sold" />
+                        <input type="text" class="sold-dairy input-medium" placeholder="Number Sold" />
                       </label>
                       <div class="input-append">
-                        <input type="text" class="weight weight-dairy input-small" placeholder="Weight" />
+                        <input type="text" class="weight-dairy input-small" placeholder="Weight (kg)" />
                         <span class="add-on">kg</span>
                       </div>
                     </div>
@@ -518,25 +519,25 @@
 
               <div class="tab-pane" id="firstcalf_tab">
                 <h3>First Calf Heifers</h3>
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                <p>These are primaparous animals, in their first lactation.</p>
                 <form class="well form-inline">
                   <div class="row-fluid">
                     <div class="span4 offset1">
                       <label class="control-label">Beef:
-                        <input type="text" class="sold sold-beef input-medium" placeholder="Number Sold" />
+                        <input type="text" class="sold-beef input-medium" placeholder="Number Sold" />
                       </label>
                       <div class="input-append">
-                        <input type="text" class="weight weight-beef input-small" placeholder="Weight" />
+                        <input type="text" class="weight-beef input-small" placeholder="Weight (kg)" />
                         <span class="add-on">kg</span>
                       </div>
                     </div>
 
                     <div class="span4 offset2">
                       <label class="control-label">Dairy:
-                        <input type="text" class="sold sold-dairy input-medium" placeholder="Number Sold" />
+                        <input type="text" class="sold-dairy input-medium" placeholder="Number Sold" />
                       </label>
                       <div class="input-append">
-                        <input type="text" class="weight weight-dairy input-small" placeholder="Weight" />
+                        <input type="text" class="weight-dairy input-small" placeholder="Weight (kg)" />
                         <span class="add-on">kg</span>
                       </div>
                     </div>
@@ -564,10 +565,10 @@
 
               <div class="tab-pane" id="dry_tab">
                 <h3>Dry</h3>
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                <p>These are animals in their second or later pregnancy, typically in the last 60 days of pregnancy prior to returning to the milking herd.</p>
                 <div class="input-table-head">
                 	<label class="control-label">Total Head:
-                		<input type="text" class="sold sold-beef input-medium" />
+                		<input type="text" class="sold-beef input-medium" />
                 	</label>
                 </div>
 
@@ -575,20 +576,20 @@
                   <div class="row-fluid">
                     <div class="span4 offset1">
                       <label class="control-label">Beef:
-                        <input type="text" class="sold sold-beef input-medium" placeholder="Number Sold" />
+                        <input type="text" class="sold-beef input-medium" placeholder="Number Sold" />
                       </label>
                       <div class="input-append">
-                        <input type="text" class="weight weight-beef input-small" placeholder="Weight" />
+                        <input type="text" class="weight-beef input-small" placeholder="Weight (kg)" />
                         <span class="add-on">kg</span>
                       </div>
                     </div>
 
                     <div class="span4 offset2">
                       <label class="control-label">Dairy:
-                        <input type="text" class="sold sold-dairy input-medium" placeholder="Number Sold" />
+                        <input type="text" class="sold-dairy input-medium" placeholder="Number Sold" />
                       </label>
                       <div class="input-append">
-                        <input type="text" class="weight weight-dairy input-small" placeholder="Weight" />
+                        <input type="text" class="weight-dairy input-small" placeholder="Weight (kg)" />
                         <span class="add-on">kg</span>
                       </div>
                     </div>
@@ -616,12 +617,12 @@
 
               <div class="tab-pane" id="lactating_tab">
                 <h3>Lactating</h3>
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                <p>These  are multiparous lactating animals; they are included as a separate class because frequently the ration for multiparous animals is different than for primaparous animals.</p>
                 <form class="form-inline">
 
                 <div class="input-table-head">
                 	<label class="control-label">Total Head:
-                		<input type="text" class="sold sold-beef input-medium" />
+                		<input type="text" class="sold-beef input-medium" />
                 	</label>
                 </div>
 
@@ -629,20 +630,20 @@
 	                  <div class="row-fluid">
 	                    <div class="span4 offset1">
 	                      <label class="control-label">Beef:
-	                        <input type="text" class="sold sold-beef input-medium" placeholder="Number Sold" />
+	                        <input type="text" class="sold-beef input-medium" placeholder="Number Sold" />
 	                      </label>
 	                      <div class="input-append">
-	                        <input type="text" class="weight weight-beef input-small" placeholder="Weight" />
+	                        <input type="text" class="weight-beef input-small" placeholder="Weight (kg)" />
 	                        <span class="add-on">kg</span>
 	                      </div>
 	                    </div>
 
 	                    <div class="span4 offset2">
 	                      <label class="control-label">Dairy:
-	                        <input type="text" class="sold sold-dairy input-medium" placeholder="Number Sold" />
+	                        <input type="text" class="sold-dairy input-medium" placeholder="Number Sold" />
 	                      </label>
 	                      <div class="input-append">
-	                        <input type="text" class="weight weight-dairy input-small" placeholder="Weight" />
+	                        <input type="text" class="weight-dairy input-small" placeholder="Weight (kg)" />
 	                        <span class="add-on">kg</span>
 	                      </div>
 	                    </div>

@@ -113,8 +113,7 @@ function avgShrunkWeightGain(timeOne, timeTwo, matureWeight)
  * Retained energy is a measure of the calories and nutrients consumed in the  
  * ration which are 'deposited' as flesh or body mass of the growing animal 
  * 
- * @param ageStart {number} The start age in days of the heifer to start the 
- *                          calculation. 
+ * @param ageStart {number} The initial age in days - lower limit of the integral in the calculation. 
  * @param ageEnd {number} The age in days of the heifer to end the calculation. 
  * @param startLiveWeight The live weight to start the calculation. 
  * @param endLiveWeight The live weight to end the calculation. 
@@ -145,7 +144,7 @@ function retainedEnergy(ageStart, ageEnd, startLiveWeight, endLiveWeight, mature
     } 
   
     // TODO(samnsparky): These values are not explained 
-    return 3.238 * matureShrunkBodyWeight * Math.pow(shrunkweightGain,0.97) * (Math.pow((endLiveWeight * 0.96 / matureShrunkBodyWeight),7/4) - Math.pow((startshrunkbodyWeight / matureShrunkBodyWeight),7/4)); 
+    return 3.238 * matureShrunkBodyWeight * Math.pow(shrunkweightGain,0.097) * (Math.pow((endLiveWeight * 0.96 / matureShrunkBodyWeight),7/4) - Math.pow((startshrunkbodyWeight / matureShrunkBodyWeight),7/4)); 
 } 
   
   
@@ -197,7 +196,7 @@ function maintEnergyLactation(liveWeight, daysPreg, matureWeight)
 function CDMLactation (milkProduction, milkFat, milkProtein, replaceRate, data) 
 { 
 var neLact = replaceRate*data.firstCalfHeifer.NEL + (1-replaceRate)*data.mature.NEL;  // Assuming replacement rate as weighting for energy density 
- return (milkProduction * (0.0929 * milkFat + 0.05882 * milkProtein + 0.192)/neLact); 
+ return (milkProduction * (0.0929 * milkFat + 0.05882 * milkProtein + 0.192) / neLact); 
 } 
   
 // TODO(samnsparky): Need description. 
@@ -219,8 +218,8 @@ function CDMGrowth(saleWeight, matureWeight, data)
   
     var bullCalfWeight = 0.0625 * matureWeight; 
     var bredHeiferWeight = 0.55 * matureWeight; 
-    var openHeiferWeight = (bullCalfWeight + bredHeiferWeight) / 2; 
-    var firstCalfHeiferWeight = 0.8 * matureWeight; 
+    //var openHeiferWeight = (bullCalfWeight + bredHeiferWeight) / 2; 
+    //var firstCalfHeiferWeight = 0.8 * matureWeight; 
     var breedingAge = bertAge(0.55 * matureWeight, matureWeight); 
     var calvingAge = breedingAge + 279; 
     var age100kg = bertAge(100,matureWeight); 
@@ -281,7 +280,7 @@ function CDM_Maint_Growth(saleWeight, matureWeight, data)
   
     var bullCalfWeight = 0.0625 * matureWeight; 
     var bredHeiferWeight = 0.55 * matureWeight; 
-    var openHeiferWeight = (bullCalfWeight + bredHeiferWeight) / 2; 
+ //   var openHeiferWeight = (bullCalfWeight + bredHeiferWeight) / 2; 
     var firstCalfHeiferWeight = 0.8 * matureWeight; 
     var CDM = 0; 
       
@@ -307,14 +306,7 @@ function CDM_Maint_Growth(saleWeight, matureWeight, data)
     } 
   
 } 
- 
- /**
-  * Perform the proper lactation maintenance calculation by animal type.
-  *
-  * @param {string} animal, The type of animal for which the calculation should be performed.
-  *	@param {number} matureWeight, The weight of the mature animal.
-  * @param {array} data,
- **/
+  
 function CDM_Maint_Lac(animal, matureWeight, data) 
 { 
       
@@ -330,7 +322,7 @@ function CDM_Maint_Lac(animal, matureWeight, data)
     } 
     else if (animal = 'dry') 
     { 
-    	// Assuming animals dry last 60 days of 279 day pregnancy - average DaysPreg = 249
+        // Assuming animals dry last 60 days of 279 day pregnancy - average DaysPreg = 249
         return maintEnergyLactation(matureWeight, 249 , matureWeight)/data.dry.NEL;
     } 
   
