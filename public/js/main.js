@@ -22,7 +22,7 @@ function main()
 { 
     var farm = retrieveUserInput();             //WHEN IS FEED.CSV READ - IT IS USED BY getFeedInfo() 
     var monthsGrazing = getMonthsGrazing(); 
-    var sales = getHeadSold();                  //EMPTY FUNCTION 
+    var sales = getHeadSold();         
     var matureWeight = getMatureWeight(); 
     var milkProduction = getMilkProduction(); 
     var milkFat = getMilkFat(); 
@@ -159,6 +159,10 @@ $('.btn-input').click(function (e){
     } 
   else createAlert(validationErrorMessages['val-feedration']); 
 }); 
+
+$('.grazing-month').keyup(function() {
+	monthsGrazingAutoComplete();
+});
   
   
 // Request feed nutrients farm 
