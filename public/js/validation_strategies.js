@@ -1,3 +1,5 @@
+
+// Wizard
 var validationStrategies = {};
 validationStrategies.step1 = [
 	{
@@ -54,3 +56,51 @@ validationStrategies.step3 = [
 		tooltip: "Must be between %d and %d"
   	}
 ];
+
+// Large input table
+function IntegerFieldValidator(elem)
+{
+	this.elem = elem;
+
+	this.validate = function()
+	{
+		if(/^\d+$/.test($(elem).val()))
+		{
+			$(elem).tooltip('hide');
+			return true;
+		}
+		else
+		{
+			$(elem).tooltip({ 
+				placement: 'right',
+				trigger: 'manual',
+				title: "Must be an integer (non-decimal number)."
+			}).tooltip('show');
+			return false;
+		}
+	}
+}
+
+
+function FloatFieldValidator(elem)
+{
+	this.elem = elem;
+
+	this.validate = function()
+	{
+		if(/^\d+(\.\d*)?$/.test($(elem).val()))
+		{
+			$(elem).tooltip('hide');
+			return true;
+		}
+		else
+		{
+			$(elem).tooltip({ 
+				placement: 'right',
+				trigger: 'manual',
+				title: "Must be a decimal number."
+			}).tooltip('show');
+			return false;
+		}
+	}
+}
