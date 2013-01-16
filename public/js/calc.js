@@ -307,7 +307,14 @@ function CDM_Maint_Growth(saleWeight, matureWeight, data)
     } 
   
 } 
-  
+ 
+ /**
+  * Perform the proper lactation maintenance calculation by animal type.
+  *
+  * @param {string} animal, The type of animal for which the calculation should be performed.
+  *	@param {number} matureWeight, The weight of the mature animal.
+  * @param {array} data,
+ **/
 function CDM_Maint_Lac(animal, matureWeight, data) 
 { 
       
