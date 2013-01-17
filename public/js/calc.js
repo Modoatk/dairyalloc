@@ -339,5 +339,5 @@ if(typeof window == 'undefined')
     exports.retainedEnergy = retainedEnergy; 
     exports.maintEnergyGrowth = maintEnergyGrowth; 
     exports.maintEnergyLactation = maintEnergyLactation; 
-    exports.cumulativeDryMatterGrowth = cumulativeDryMatterGrowth; 
+    //exports.cumulativeDryMatterGrowth = cumulativeDryMatterGrowth; 
 } 

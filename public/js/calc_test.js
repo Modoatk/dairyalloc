@@ -56,7 +56,6 @@ var suiteDefns =
  *                 {array of number}, expected_value {number}, and tollerance
  *                 {number}.
 **/
-**/
 function testCalculation(suiteDefn)
 {
   var name = suiteDefn.name;
