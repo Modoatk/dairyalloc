@@ -11,6 +11,50 @@ var NUMWIZARDSTEPS = 3;
   
 var nextButtonStrategy = null; 
 var wizardStep = 1; 
+
+var INPUT_TABLE_BUTTON_TARGETS = {
+  'largeinputtab-1':
+  {
+    start: '#heifer_tab',
+    end: '#bredheifer_tab',
+    old_tab_button: '#heifers-tab-button',
+    new_tab_button: '#bred-heifers-tab-button'
+  },
+  'largeinputtab-2':
+  {
+    start: '#bredheifer_tab',
+    end: '#springer_tab',
+    old_tab_button: '#bred-heifers-tab-button',
+    new_tab_button: '#springers-tab-button'
+  },
+  'largeinputtab-3':
+  {
+    start: '#springer_tab',
+    end: '#firstcalf_tab',
+    old_tab_button: '#springers-tab-button',
+    new_tab_button: '#first-calf-heifers-tab-button'
+  },
+  'largeinputtab-4':
+  {
+    start: '#firstcalf_tab',
+    end: '#dry_tab',
+    old_tab_button: '#first-calf-heifers-tab-button',
+    new_tab_button: '#dry-tab-button'
+  },
+  'largeinputtab-5':
+  {
+    start: '#dry_tab',
+    end: '#lactating_tab',
+    old_tab_button: '#dry-tab-button',
+    new_tab_button: '#lactating-tab-button'
+  },
+  'largeinputtab-6':
+  {
+    start: '#lactating_tab',
+    end: '#finish_tab',
+    old_tab_button: '#lactating-tab-button'
+  }
+} 
   
   
 // TODO(samnsparky): Finish spec for this. 
@@ -182,6 +226,23 @@ $('.grazing-month').keyup(function(e) {
 $('.nongrazing-month').keyup(function(e) {
   monthsGrazingAutoComplete('.nongrazing-month');
 }); 
+
+$('.big-table-next-button').click(function(e) {
+  var buttonID = e.target.id;
+  var tabsAffected = INPUT_TABLE_BUTTON_TARGETS[buttonID];
+  var startTab = tabsAffected.start;
+  var endTab = tabsAffected.end;
+  var startButton = tabsAffected.old_tab_button;
+  var endButton = tabsAffected.new_tab_button;
+
+  $(startTab).removeClass('active');
+  $(startTab).addClass('hide');
+  $(endTab).addClass('active');
+  $(endTab).addClass('hide');
+
+  $(startButton).removeClass('active');
+  $(endButton).addClass('active');
+});
   
 // Request feed nutrients farm 
 $.ajax({ 
