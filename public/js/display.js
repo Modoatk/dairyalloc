@@ -420,7 +420,7 @@ function appendTableRows(rows)
 	for (var i=0; i<rows.length; i++)
 	{
 		$('.input-table').each(function(idx) {
-			$(this).after('<tr class="input-table-tr'+i+'">'+rows[i]+'</tr>');
+			$(this).after('<tr class="input-table-tr'+i+'">'+appendRows[i]+'</tr>');
 		});
 	}
 }
@@ -527,13 +527,22 @@ function nextTab()
 
 /**
  * Populate corresponding grazing field with remaining months in a year.
+ *
+ * @param {string} type, The type of grazing input.
 **/
-function monthsGrazingAutoComplete()
+function monthsGrazingAutoComplete(type)
 {
-	numGrazingMonths = $('.tab-pane.active').find('.grazing-month').val();
-	numNonGrazingMonths = 12 - numGrazingMonths;
-	if(numGrazingMonths)
-		$('.tab-pane.active').find('.nongrazing-month').val(numNonGrazingMonths);
+	var other;
+	if(type == '.grazing-month')
+		other = '.nongrazing-month';
+	else other = '.grazing-month';
+
+	numMonths = $('.tab-pane.active').find(type).val();
+	if(numMonths > 0 && numMonths <= 12)
+	{
+		numOtherMonths = 12 - numMonths;
+		$('.tab-pane.active').find(other).val(numOtherMonths);
+	}
 }
 
 
