@@ -32,6 +32,8 @@ body {
 }
 
 .hero-unit h4 {
+  margin-top: -8px;
+  width: 600px;
   color: #999;
   font-size: 15px;
   font-weight: bold;
