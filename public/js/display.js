@@ -413,10 +413,10 @@ function prepareLargeInputTableValidators()
 /**
  * Add rows to the input table.
 **/
-function appendTableRows()
+function appendTableRows(rows)
 {
+	var appendRows = rows;
 	prepareLargeInputTableValidators();
-	var rows = createTableRows();
 	for (var i=0; i<rows.length; i++)
 	{
 		$('.input-table').each(function(idx) {
@@ -545,7 +545,8 @@ function genPopulatedTable()
 	$('#main-hero').removeClass('logo');
 	$('#welcome-hide').addClass('hide');
 	rmAllTableRows();
-	appendTableRows();
+	var rows = createTableRows();
+	appendTableRows(rows);
 	switchCompletion('gen-table');
 }
 
