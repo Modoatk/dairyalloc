@@ -190,7 +190,7 @@ $('#get-started').click(function (e){
 $('#modal-primary').click(function (e){ 
     
   makeValidationError(wizardStep); 
-  if(wizardStep < NUMWIZARDSTEPS && !runValidation(wizardStep)) 
+  if(wizardStep <= NUMWIZARDSTEPS && !runValidation(wizardStep)) 
   { 
     return; 
   } 
