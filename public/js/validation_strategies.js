@@ -6,13 +6,13 @@ validationStrategies.step1 = [
 		method: checkNumSelected,
 		elementName: "#dropdown-grazingfeeds",
 		params: [2],
-		tooltip: "Need to select %d elements"
+		tooltip: "Select at least %d feeds"
 	},
 	{
 		method: checkNumSelected,
 		elementName: "#dropdown-nongrazingfeeds",
 		params: [2],
-		tooltip: "Need to select %d elements"
+		tooltip: "Select at least %d feeds"
 	}
 ];
 
