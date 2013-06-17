@@ -334,6 +334,37 @@ function makeValidationError(name)
 	}
 }
 
+/**
+ * Load the feeds to be used from storage and populate form fields.
+**/
+function populateFeeds(feedData)
+{
+	var feeds = new Array;
+	for (var feed in feedData)
+	{
+		status = feedData[feed][1];
+		feedName = feedData[feed][0];
+ 		if (status == 1)
+  			feeds.push(feedName);
+	}
+
+	for (var feedNum in feeds)
+	{
+		var feed = feeds[feedNum];
+		var human_feed = transString(feed);
+		var grazingfeed_format = '<div><input id="grazinginput-'+feed+'" type="checkbox"/><label for="grazinginput-'+feed+'">'+human_feed+'</label></div>';
+		var nongrazingfeed_format = '<div><input id="nongrazinginput-'+feed+'" type="checkbox"/><label for="nongrazinginput-'+feed+'">'+human_feed+'</label></div>';
+
+		console.log(grazingfeed_format);
+		$('#dropdown-grazingfeeds').each(function(idx) {
+			$(this).append(grazingfeed_format);
+		});
+
+		$('#dropdown-nongrazingfeeds').each(function(idx) {
+			$(this).append(nongrazingfeed_format);
+		});
+	}
+}
 
 /**
  * Form input feed table rows based on feeds chosen.

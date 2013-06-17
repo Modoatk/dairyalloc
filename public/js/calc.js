@@ -26,22 +26,22 @@ function getFeedInfo(feed, type)
     switch(type) 
     { 
         case "IFN": 
-            idx = 1; 
-            break; 
-        case "ne_lact": 
             idx = 2; 
             break; 
-        case "ne_growth": 
+        case "ne_lact": 
             idx = 3; 
             break; 
-        case "ne_maint": 
+        case "ne_growth": 
             idx = 4; 
             break; 
-        case "DM": 
+        case "ne_maint": 
             idx = 5; 
             break; 
-        case "CP": 
+        case "DM": 
             idx = 6; 
+            break; 
+        case "CP": 
+            idx = 7; 
             break; 
     } 
     for(var i=0; i<feedData.length; i++) 

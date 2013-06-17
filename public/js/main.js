@@ -183,8 +183,7 @@ $("#input-wizard").bwizard({nextBtnText: ''}, {backBtnText: ''});
 $('#get-started').click(function (e){ 
   wizardStep = 1; 
   $("#input-wizard").bwizard("show", 0); 
-}); 
-  
+});   
   
 // Manage strategies to move through the wizard dialog. 
 $('#modal-primary').click(function (e){ 
@@ -244,15 +243,23 @@ $('.big-table-next-button').click(function(e) {
   $(endButton).addClass('active');
 });
   
-// Request feed nutrients farm 
-$.ajax({ 
-  url: "feed_nutrients.csv", 
-  type: 'GET', 
-  success: function (farm){ 
-    window.feedfarmCSV = farm; 
-  }           
-}).done(function() { 
-  window.feedfarm = $.csv.toArrays(feedfarmCSV); 
-}); 
+// Request feed nutrients farm
+function nutrientsAjax() {
+  return $.ajax({ 
+    url: "feed_nutrients.csv", 
+    type: 'GET', 
+    success: function (farm){ 
+      window.feedfarmCSV = farm; 
+    }           
+  }).done(function() { 
+    window.feedfarm = $.csv.toArrays(feedfarmCSV); 
+  });
+}
+
+$.when(nutrientsAjax()).done(function(nutrientsResponse) {
+  // Populate first wizard field with active feeds.
+  populateFeeds(window.feedfarm); 
+});
+
 
 });
