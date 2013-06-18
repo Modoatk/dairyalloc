@@ -165,6 +165,11 @@ input.feed-in-num{
   color: #818;
 }
 
+.input-append > div.tooltip
+{
+  left: 297px !important;
+}
+
 .comment {
     padding: 10px 10px 10px 10px;
     background-color: #fff;
