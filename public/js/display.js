@@ -253,7 +253,7 @@ function checkNumSelected(targetName, numNeededParam)
  * @param {string} component, The component whose strategy will be run.
  * @return {boolean} True if validated successfully, and false otherwise.
 */
-function runValidationStrategy(component)
+function runWizardValidationStrategy(component)
 {
 	var method = component.method;
 	var elementName = component.elementName;
@@ -267,7 +267,7 @@ function runValidationStrategy(component)
  * @param {string} name, The name of the step to use.
  * @return {boolean} True if validated successfully, and false otherwise.
 */
-function runValidation(name)
+function runWizardValidation(name)
 {
 	var strategy = validationStrategies[
 	"step" + new String(name)
@@ -278,7 +278,7 @@ function runValidation(name)
 	var failed_components = strategy.filter(
 		function(component, index, targetArray)
 		{
-			return !runValidationStrategy(component);
+			return !runWizardValidationStrategy(component);
 		}
 	);
 
@@ -291,7 +291,7 @@ function runValidation(name)
  *
  * @param {string} name, The name of the step to use.
 */
-function makeValidationError(name)
+function makeWizardValidationError(name)
 {
   var strategy = validationStrategies[
 	"step" + new String(name)
@@ -304,7 +304,7 @@ function makeValidationError(name)
 		var component = strategy[componentName];
 		var elementName = component.elementName;
 
-		if(runValidationStrategy(component))
+		if(runWizardValidationStrategy(component))
 		{
 			$(elementName).tooltip('hide');
 		}
@@ -355,7 +355,6 @@ function populateFeeds(feedData)
 		var grazingfeed_format = '<div><input id="grazinginput-'+feed+'" type="checkbox"/><label for="grazinginput-'+feed+'">'+human_feed+'</label></div>';
 		var nongrazingfeed_format = '<div><input id="nongrazinginput-'+feed+'" type="checkbox"/><label for="nongrazinginput-'+feed+'">'+human_feed+'</label></div>';
 
-		console.log(grazingfeed_format);
 		$('#dropdown-grazingfeeds').each(function(idx) {
 			$(this).append(grazingfeed_format);
 		});

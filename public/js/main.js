@@ -188,8 +188,8 @@ $('#get-started').click(function (e){
 // Manage strategies to move through the wizard dialog. 
 $('#modal-primary').click(function (e){ 
     
-  makeValidationError(wizardStep); 
-  if(wizardStep <= NUMWIZARDSTEPS && !runValidation(wizardStep)) 
+  makeWizardValidationError(wizardStep); 
+  if(wizardStep <= NUMWIZARDSTEPS && !runWizardValidation(wizardStep)) 
   { 
     return; 
   } 
