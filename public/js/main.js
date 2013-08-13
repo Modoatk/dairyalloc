@@ -182,9 +182,10 @@ $("#input-wizard").bwizard({nextBtnText: ''}, {backBtnText: ''});
   
 $('#get-started').click(function (e){ 
   wizardStep = 1; 
+  nextButtonStrategy = advanceWizard;
   $("#input-wizard").bwizard("show", 0); 
-});   
-  
+});  
+
 // Manage strategies to move through the wizard dialog. 
 $('#modal-primary').click(function (e){ 
     
