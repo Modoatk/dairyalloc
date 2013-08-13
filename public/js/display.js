@@ -599,4 +599,17 @@ function populateOutputTable(data)
 {
 
 }
-
+		
+// Large input table tooltip definitions.
+$('#heifer_info').tooltip({placement: 'right', trigger: 'hover',
+						   title: 'Heifers refer to female animals which will be bred as replacements for culled mature cows. Also refered to as Open Heifers.'});
+$('#bredheifer_info').tooltip({placement: 'right', trigger: 'hover',
+						   title: 'Animals which have been bred, typically at approximately 13 -14 months of age.'});
+$('#springer_info').tooltip({placement: 'right', trigger: 'hover',
+						   title: 'This animal class may not be commonly used; it is a subset of Bred Heifers which may receive a different diet during the final 3 to 4 weeks of pregnancy.'});
+$('#firstcalf_info').tooltip({placement: 'right', trigger: 'hover',
+						   title: 'These are primaparous animals, in their first lactation.'});
+$('#dry_info').tooltip({placement: 'right', trigger: 'hover',
+						   title: 'These are animals in their second or later pregnancy, typically in the last 60 days of pregnancy prior to returning to the milking herd.'});
+$('#lactating_info').tooltip({placement: 'right', trigger: 'hover',
+						   title: 'These are multiparous lactating animals; they are included as a separate class because frequently the ration for multiparous animals is different than for primaparous animals.'});
