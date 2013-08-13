@@ -130,6 +130,19 @@ input.feed-in-num{
 	border-radius: 4px 4px 0 0;
 }
 
+.glyph
+{
+  height: 16px;
+  width: 16px;
+  margin-bottom: 1px;
+}
+
+.glyph:hover
+{
+  box-shadow: 0px 0px 6px rgba(0, 0, 255, 1);
+  border-radius: 20px; 
+}
+
 .form-inline .input-append
 {
   margin-top: 4px;
@@ -163,6 +176,10 @@ input.feed-in-num{
 .nav-tabs > .active > li > a
 {
   color: #818;
+}
+
+div[class="tooltip-inner"] {
+    max-width: 1000px;
 }
 
 .input-append > div.tooltip
