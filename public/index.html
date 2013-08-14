@@ -474,11 +474,33 @@
 </div>
 <div id="footer">
 	<div class="container">
-		<p class="muted credit">
-			License information
-		</p>
+		<a id="about" href="#about-modal" role="button" class="muted credit" data-toggle="modal">
+			About
+		</a>
+		<div id="about-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="about-modal-label" aria-hidden="true">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+				<h3>About</h3>
+			</div>
+			<div style="height: 170px" class="modal-body">
+			    <p style="padding-left: 30%">
+			    	&copy; Stephen Thoma 2013
+			    	<br><br>
+					Released under the <a href="http://www.gnu.org/licenses/gpl-3.0.txt">GNU GPL v3 license.</a>
+					<br>
+					See LICENSE.txt.
+					<br><br>
+					Thanks to collaborators:
+					<ul style="padding-left: 30%; margin-top: -10px;">
+						<li>Sam Pottinger</li>
+						<li>Dr. Greg Thoma</li>
+					</ul>
+			    </p>
+			</div>
+		</div>
 	</div>
 </div>
+
 <!-- Javascript -->
 <script src="js/jquery.js" type="text/javascript"></script>
 <script src="js/jquery-csv.min.js" type="text/javascript"></script>

@@ -222,4 +222,5 @@ div[class="tooltip-inner"] {
 
 .credit {
   margin-top: 20px;
+  display: block;
 }
